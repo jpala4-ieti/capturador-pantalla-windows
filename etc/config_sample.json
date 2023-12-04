@@ -1,0 +1,4 @@
+{
+    "opcions_desplegable": ["Opción 1", "Opción 2", "Opción 3"],
+	"url_servei_captures": "https://example.com/capturador_pantalla/rebre_captura.php"
+}
