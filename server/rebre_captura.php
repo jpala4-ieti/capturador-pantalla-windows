@@ -1,8 +1,25 @@
 <?php
+function netejarNom($string) {
+    // Mapeig de caràcters amb accents a caràcters sense accents
+    $map = array(
+        'á' => 'a', 'Á' => 'A', 'à' => 'a', 'À' => 'A',
+        'é' => 'e', 'É' => 'E', 'è' => 'e', 'È' => 'E',
+        'í' => 'i', 'Í' => 'I', 'ì' => 'i', 'Ì' => 'I',
+        'ó' => 'o', 'Ó' => 'O', 'ò' => 'o', 'Ò' => 'O',
+        'ú' => 'u', 'Ú' => 'U', 'ù' => 'u', 'Ù' => 'U',
+        'ñ' => 'n', 'Ñ' => 'N', 'ç' => 'c', 'Ç' => 'C'
+    );
+    $string = strtr($string, $map);
+
+    $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Elimina caràcters especials
+    $string = strtolower($string); // Convertir a minúscules
+    $string = preg_replace('/\s+/', '_', $string); // Substituir espais per guions baixos
+    return $string;
+}
+
 // Rebre dades JSON de la petició POST
 $dadesJson = file_get_contents('php://input');
 $dadesJsonUtf8 = mb_convert_encoding($dadesJson, 'UTF-8', 'UTF-8');
-
 $dades = json_decode($dadesJsonUtf8, true);
 
 // Verificar que tots els camps necessaris estan presents
@@ -22,12 +39,7 @@ $prova = $dades['prova'];
 $imatgeBase64 = $dades['imatge'];
 
 // Netejar i preparar el nom de la carpeta
-$nomCarpeta = strtolower(preg_replace('/\s+/', '_', $prova));
-$nomCarpeta = preg_replace('/[Áá]/', 'a', $nomCarpeta);
-$nomCarpeta = preg_replace('/[Éé]/', 'e', $nomCarpeta);
-$nomCarpeta = preg_replace('/[Íí]/', 'i', $nomCarpeta);
-$nomCarpeta = preg_replace('/[Óó]/', 'o', $nomCarpeta);
-$nomCarpeta = preg_replace('/[Úú]/', 'u', $nomCarpeta);
+$nomCarpeta = netejarNom($prova);
 
 // Crear la carpeta "captures" si no existeix
 if (!file_exists('captures')) {
@@ -41,12 +53,7 @@ if (!file_exists($rutaCompleta)) {
 }
 
 // Preparar el nom del fitxer
-$nomFitxer = $rutaCompleta . '/' . strtolower(str_replace(' ', '-', "{$prova}__{$cognom}-{$nom}.json"));
-$nomFitxer = preg_replace('/[Áá]/', 'a', $nomFitxer);
-$nomFitxer = preg_replace('/[Éé]/', 'e', $nomFitxer);
-$nomFitxer = preg_replace('/[Íí]/', 'i', $nomFitxer);
-$nomFitxer = preg_replace('/[Óó]/', 'o', $nomFitxer);
-$nomFitxer = preg_replace('/[Úú]/', 'u', $nomFitxer);
+$nomFitxer = $rutaCompleta . '/' . netejarNom("{$prova}__{$cognom}-{$nom}") . '.json';
 
 // Guardar les dades en un fitxer
 file_put_contents($nomFitxer, $dadesJsonUtf8);

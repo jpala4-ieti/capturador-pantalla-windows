@@ -2,7 +2,7 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="10">
+    <meta http-equiv="refresh" content="5">
     <title>Captures</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -23,6 +23,7 @@ if (file_exists($directoriCaptures) && is_dir($directoriCaptures)) {
         while (($subdir = readdir($dirHandle)) !== false) {
             if ($subdir != '.' && $subdir != '..') {
                 echo "<h1 class='mt-4'>" . htmlspecialchars($subdir) . "</h1>";
+                echo "<div class='row'>"; // Iniciar una nova fila
 
                 $subdirPath = $directoriCaptures . '/' . $subdir;
                 $subdirHandle = opendir($subdirPath);
@@ -36,6 +37,7 @@ if (file_exists($directoriCaptures) && is_dir($directoriCaptures)) {
                             $cognom = htmlspecialchars($jsonData['cognom']);
                             $nom = htmlspecialchars($jsonData['nom']);
 
+                            echo "<div class='col-md-4'>"; // Iniciar una columna
                             echo "<div class='card capture-card'>";
                             echo "<div class='card-body'>";
                             echo "<img src='data:image/png;base64," . $imatgeBase64 . "' class='capture-image float-left mr-3'>";
@@ -43,10 +45,12 @@ if (file_exists($directoriCaptures) && is_dir($directoriCaptures)) {
                             echo "<p><strong>Nom:</strong> $cognom, $nom</p>";
                             echo "</div>";
                             echo "</div>";
+                            echo "</div>"; // Tancar columna
                         }
                     }
                     closedir($subdirHandle);
                 }
+                echo "</div>"; // Tancar fila
             }
         }
         closedir($dirHandle);
