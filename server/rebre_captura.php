@@ -11,11 +11,20 @@ function netejarNom($string) {
     );
     $string = strtr($string, $map);
 
-    $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Elimina caràcters especials
-    $string = strtolower($string); // Convertir a minúscules
-    $string = preg_replace('/\s+/', '_', $string); // Substituir espais per guions baixos
+    // Eliminar caràcters que no siguin lletres, números, punts, guions baixos i guions
+    // I reemplaçar-los amb guions
+    $string = preg_replace('/[^A-Za-z0-9\-\_\.]/', '-', $string);
+
+    // Substituir múltiples guions seguits per un sol guion
+    $string = preg_replace('/\-+/', '-', $string);
+
+    // Convertir a minúscules i substituir espais per guions baixos
+    $string = strtolower($string);
+    $string = preg_replace('/\s+/', '_', $string);
+
     return $string;
 }
+
 
 // Rebre dades JSON de la petició POST
 $dadesJson = file_get_contents('php://input');

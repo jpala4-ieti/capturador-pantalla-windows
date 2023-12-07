@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="5">
-    <title>Captures</title>
+    <title>M01-UF1-PT1 Part 2 - Captures</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .container { margin-top: 20px; }
@@ -40,7 +40,10 @@ if (file_exists($directoriCaptures) && is_dir($directoriCaptures)) {
                             echo "<div class='col-md-4'>"; // Iniciar una columna
                             echo "<div class='card capture-card'>";
                             echo "<div class='card-body'>";
+                            // Enllaç amb target=_blank per obrir en una nova pestanya
+                            echo "<a href='data:image/png;base64," . $imatgeBase64 . "' target='_blank'>";
                             echo "<img src='data:image/png;base64," . $imatgeBase64 . "' class='capture-image float-left mr-3'>";
+                            echo "</a>";
                             echo "<p><strong>Prova:</strong> $prova</p>";
                             echo "<p><strong>Nom:</strong> $cognom, $nom</p>";
                             echo "</div>";
